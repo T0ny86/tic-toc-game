@@ -1,4 +1,7 @@
-function openPlayerConfig(){
+function openPlayerConfig(event){
+    //const selectedPlayerId = event.target.getAttribute("data-playerid")
+    // const selectedPlayerId = event.target.dataset.playerid;
+    editedPlayer =  +event.target.dataset.playerid; // +'1' => 1 plus turn the numric text to value
     playerConfigOverlay.style.display = "block";
     backdropElement.style.display = "block";
 }
@@ -8,6 +11,7 @@ function closePlayerConfig() {
     backdropElement.style.display = "none"; 
     formElement.firstElementChild.classList.remove("error");
     errorsOutputElement.textContent ="";
+    formElement.firstElementChild.lastElementChild.value = ''; // not the best method to reach element because we use hierarchy structre
 }
 
 function savePlayerConfig(event) {
@@ -19,7 +23,20 @@ function savePlayerConfig(event) {
     if (!enteredPlayername) {
         event.target.firstElementChild.classList.add("error");
         errorsOutputElement.textContent = "Please enter a valid name!";
-        // return;
+        return;
     }
+    const updatedPlayerDataElement = document.getElementById("player-" + editedPlayer + "-data");
+    updatedPlayerDataElement.children[1].textContent = enteredPlayername;
+    /*
+    if (editedPlayer === 1) {
+        players[0].name = enteredPlayername;
+        
+    } else {
+        players[1].name = enteredPlayername;
+    }
+    */
+    players[editedPlayer-1].name = enteredPlayername;
+    
+    closePlayerConfig();
 
 }
